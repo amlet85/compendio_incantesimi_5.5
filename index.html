@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compendio Incantesimi D&D</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a1a1a">
+</head>
+<body>
+  <header>
+    <h1>📜 Compendio Incantesimi</h1>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Cerca incantesimo...">
+    </div>
+    <div class="filters">
+      <select id="levelFilter">
+        <option value="">Tutti i Livelli</option>
+        <option value="0">Trucchetti (Livello 0)</option>
+        <option value="1">Livello 1</option>
+      </select>
+      <select id="classFilter">
+        <option value="">Tutte le Classi</option>
+        <option value="Bardo">Bardo</option>
+        <option value="Chierico">Chierico</option>
+        <option value="Druido">Druido</option>
+        <option value="Mago">Mago</option>
+        <option value="Paladino">Paladino</option>
+        <option value="Ranger">Ranger</option>
+        <option value="Stregone">Stregone</option>
+        <option value="Warlock">Warlock</option>
+      </select>
+    </div>
+  </header>
+  <main id="spellsContainer"></main>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #121212;
+  color: #e0e0e0;
+  margin: 0;
+  padding: 15px;
+}
+header {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+}
+h1 { color: #e69a28; margin-bottom: 15px; }
+.search-bar input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background-color: #222;
+  color: #fff;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+.filters { display: flex; gap: 10px; }
+#spellsContainer { max-width: 800px; margin: 0 auto; }
+.spell-card {
+  background-color: #1e1e1e;
+  border-left: 4px solid #e69a28;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+.spell-card h2 {
+  margin-top: 0;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.spell-level {
+  font-size: 14px;
+  background-color: #e69a28;
+  color: #121212;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.spell-meta p { margin: 4px 0; font-size: 14px; color: #aaa; }
+.spell-description {
+  margin-top: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+  border-top: 1px solid #333;
+  padding-top: 10px;
+}
