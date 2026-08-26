@@ -1,6 +1,6 @@
 let allSpells = [];
 
-// Registrazione Service Worker per offline
+// Registrazione Service Worker per funzionamento offline
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
@@ -16,7 +16,7 @@ async function loadSpells() {
   }
 }
 
-// Funzione per estrarre il testo della descrizione
+// Estrazione del testo della descrizione
 function getSpellDescription(spell) {
   if (spell.description_it) return spell.description_it;
   if (spell.descriptions_it) {
@@ -29,7 +29,7 @@ function getSpellDescription(spell) {
   return '<em>Descrizione non disponibile.</em>';
 }
 
-// Funzione per mostrare gli incantesimi a schermo
+// Mostra gli incantesimi a schermo
 function renderSpells(spells) {
   const container = document.getElementById('spellsContainer');
   container.innerHTML = '';
@@ -43,7 +43,7 @@ function renderSpells(spells) {
     const card = document.createElement('div');
     card.className = 'spell-card';
 
-    // Lettura delle classi
+    // Formattazione lista classi
     let classesList = 'N/D';
     if (spell.class_it) {
       classesList = Array.isArray(spell.class_it) ? spell.class_it.join(', ') : spell.class_it;
@@ -51,7 +51,7 @@ function renderSpells(spells) {
       classesList = Array.isArray(spell.classes) ? spell.classes.join(', ') : spell.classes;
     }
 
-    // Lettura delle componenti (V, S, M)
+    // Formattazione componenti (V, S, M)
     const components = [];
     if (spell.components) {
       if (typeof spell.components === 'object') {
@@ -85,7 +85,7 @@ function renderSpells(spells) {
   });
 }
 
-// Funzione di filtraggio flessibile
+// Funzione di filtraggio ottimizzata per il campo classe
 function filterSpells() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const selectedLevel = document.getElementById('levelFilter').value;
@@ -101,15 +101,21 @@ function filterSpells() {
     const spellLevel = (spell.level !== undefined && spell.level !== null) ? spell.level.toString() : '';
     const matchesLevel = selectedLevel === '' || spellLevel === selectedLevel;
 
-    // 3. Filtro Classe (ricerca flessibile su class_it e su classes)
-    let rawClasses = [];
-    if (Array.isArray(spell.class_it)) rawClasses.push(...spell.class_it);
-    else if (typeof spell.class_it === 'string') rawClasses.push(spell.class_it);
-    
-    if (Array.isArray(spell.classes)) rawClasses.push(...spell.classes);
-    else if (typeof spell.classes === 'string') rawClasses.push(spell.classes);
+    // 3. Filtro Classe (estrazione dinamica da tutti i campi possibili)
+    let spellClasses = [];
+    if (spell.classes && Array.isArray(spell.classes)) {
+      spellClasses = spellClasses.concat(spell.classes);
+    }
+    if (spell.class_it) {
+      if (Array.isArray(spell.class_it)) spellClasses = spellClasses.concat(spell.class_it);
+      else spellClasses.push(spell.class_it);
+    }
+    if (spell.classes && typeof spell.classes === 'string') {
+      spellClasses.push(spell.classes);
+    }
 
-    const classesString = rawClasses.join(' ').toLowerCase();
+    // Conversione di tutto il testo delle classi in un'unica stringa minuscola
+    const classesString = spellClasses.join(' ').toLowerCase();
     const matchesClass = selectedClass === '' || classesString.includes(selectedClass);
 
     return matchesName && matchesLevel && matchesClass;
@@ -118,7 +124,7 @@ function filterSpells() {
   renderSpells(filtered);
 }
 
-// Collegamento eventi
+// Collegamento filtri
 document.getElementById('searchInput').addEventListener('input', filterSpells);
 document.getElementById('levelFilter').addEventListener('change', filterSpells);
 document.getElementById('classFilter').addEventListener('change', filterSpells);
