@@ -5,9 +5,7 @@
     "name_it": "Artificio druidico",
     "level": 0,
     "school": "transmutation",
-    "classes": [
-      "druid"
-    ],
+    "classes": [ "druid"    ],
     "action_type": "action",
     "concentration": false,
     "ritual": false,
@@ -32,9 +30,7 @@
     "name_it": "Beffa crudele",
     "level": 0,
     "school": "enchantment",
-    "classes": [
-      "bard"
-    ],
+    "classes": [  "bard"    ],
     "action_type": "action",
     "concentration": false,
     "ritual": false,
