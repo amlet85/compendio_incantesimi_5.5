@@ -1,8 +1,10 @@
 let allSpells = [];
 
-// Registrazione Service Worker per funzionamento offline
+// Registrazione Service Worker con controllo aggiornamenti
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    reg.update(); // Forza il controllo di nuove versioni dei file
+  });
 }
 
 // Caricamento del file JSON
@@ -52,10 +54,10 @@ function renderSpells(spells) {
     }
 
     // Formattazione componenti (V, S, M)
-    const components = [];
+    let components = [];
     if (spell.components) {
       if (Array.isArray(spell.components)) {
-        components.push(...spell.components);
+        components = [...spell.components];
       } else if (typeof spell.components === 'object') {
         if (spell.components.verbal) components.push('V');
         if (spell.components.somatic) components.push('S');
@@ -65,9 +67,14 @@ function renderSpells(spells) {
       }
     }
 
-    // Aggiunta dettagli materiale se presenti
-    if (spell.material && typeof spell.material === 'string' && !components.includes('M')) {
-      components.push(`M (${spell.material})`);
+    // Gestione del testo del materiale
+    if (spell.material && typeof spell.material === 'string') {
+      const hasM = components.some(c => c.trim().toUpperCase() === 'M');
+      if (hasM) {
+        components = components.map(c => c.trim().toUpperCase() === 'M' ? `M (${spell.material})` : c);
+      } else {
+        components.push(`M (${spell.material})`);
+      }
     }
 
     // Gestione tempo di lancio (fallback su action_type)
@@ -105,7 +112,7 @@ function renderSpells(spells) {
   });
 }
 
-// Funzione di filtraggio per il campo classe
+// Funzione di filtraggio
 function filterSpells() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const selectedLevel = document.getElementById('levelFilter').value;
