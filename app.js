@@ -90,11 +90,18 @@ function renderSpells(spells) {
       castingTime = actionMap[spell.action_type] || spell.action_type || 'N/D';
     }
 
+    // Gestione Incantesimo Rituale
+    const isRitual = spell.ritual === true || spell.ritual === 'true';
+    if (isRitual) {
+      castingTime += ' (rituale)';
+    }
+
     const descriptionText = getSpellDescription(spell);
     const levelText = spell.level === 0 || spell.level === '0' ? 'Trucchetto' : `Lvl ${spell.level}`;
+    const ritualBadge = isRitual ? ' <span class="ritual-tag">[Rituale]</span>' : '';
 
     card.innerHTML = `
-      <h2>${spell.name_it || spell.name} <span class="spell-level">${levelText}</span></h2>
+      <h2>${spell.name_it || spell.name} <span class="spell-level">${levelText}${ritualBadge}</span></h2>
       <div class="spell-meta">
         <p><strong>Scuola:</strong> ${spell.school_it || spell.school || 'N/D'}</p>
         <p><strong>Classi:</strong> ${classesList}</p>
