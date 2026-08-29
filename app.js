@@ -54,13 +54,23 @@ function renderSpells(spells) {
     // Formattazione componenti (V, S, M)
     const components = [];
     if (spell.components) {
-      if (typeof spell.components === 'object') {
+      if (Array.isArray(spell.components)) {
+        // Gestisce array come ["V", "S"]
+        components.push(...spell.components);
+      } else if (typeof spell.components === 'object') {
+        // Gestisce oggetti come { verbal: true, somatic: true, material: false }
         if (spell.components.verbal) components.push('V');
         if (spell.components.somatic) components.push('S');
         if (spell.components.material) components.push('M');
       } else if (typeof spell.components === 'string') {
+        // Gestisce stringhe singole come "V, S"
         components.push(spell.components);
       }
+    }
+
+    // Se c'è una descrizione dei materiali (campo material), la accoda a M
+    if (spell.material && typeof spell.material === 'string' && !components.includes('M')) {
+      components.push(`M (${spell.material})`);
     }
 
     const descriptionText = getSpellDescription(spell);
@@ -73,7 +83,7 @@ function renderSpells(spells) {
         <p><strong>Classi:</strong> ${classesList}</p>
         <p><strong>Tempo di lancio:</strong> ${spell.casting_time_it || spell.casting_time || 'N/D'}</p>
         <p><strong>Gittata:</strong> ${spell.range_it || spell.range || 'N/D'}</p>
-        <p><strong>Componenti:</strong> ${components.join(', ') || 'Nessuna'}</p>
+        <p><strong>Componenti:</strong> ${components.length > 0 ? components.join(', ') : 'Nessuna'}</p>
         <p><strong>Durata:</strong> ${spell.duration_it || spell.duration || 'N/D'}</p>
       </div>
       <div class="spell-description">
