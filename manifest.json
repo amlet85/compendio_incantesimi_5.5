@@ -1,6 +1,6 @@
 {
-  "name": "Compendio Creazione Personaggio D&D",
-  "short_name": "Personaggi",
+  "name": "Compendio incantesimi D&D 5.5",
+  "short_name": "incantesimi",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#121212",
