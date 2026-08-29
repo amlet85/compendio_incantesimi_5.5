@@ -973,7 +973,7 @@
       "wizard",
       "sorcerer"
     ],
-    "action_type": "action",
+    "action_type": "reaction",
     "concentration": false,
     "ritual": false,
     "range": "18 metri",
@@ -1601,7 +1601,7 @@
     "classes": [
       "warlock"
     ],
-    "action_type": "action",
+    "action_type": "reaction",
     "concentration": false,
     "ritual": false,
     "range": "18 metri",
@@ -2187,7 +2187,7 @@
       "wizard",
       "sorcerer"
     ],
-    "action_type": "action",
+    "action_type": "reaction",
     "concentration": false,
     "ritual": false,
     "range": "incantatore",
@@ -4327,7 +4327,7 @@
       "sorcerer",
       "warlock"
     ],
-    "action_type": "action",
+    "action_type": "reaction",
     "concentration": false,
     "ritual": false,
     "range": "18 metri",
