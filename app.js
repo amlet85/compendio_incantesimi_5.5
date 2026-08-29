@@ -55,22 +55,32 @@ function renderSpells(spells) {
     const components = [];
     if (spell.components) {
       if (Array.isArray(spell.components)) {
-        // Gestisce array come ["V", "S"]
         components.push(...spell.components);
       } else if (typeof spell.components === 'object') {
-        // Gestisce oggetti come { verbal: true, somatic: true, material: false }
         if (spell.components.verbal) components.push('V');
         if (spell.components.somatic) components.push('S');
         if (spell.components.material) components.push('M');
       } else if (typeof spell.components === 'string') {
-        // Gestisce stringhe singole come "V, S"
         components.push(spell.components);
       }
     }
 
-    // Se c'è una descrizione dei materiali (campo material), la accoda a M
+    // Aggiunta dettagli materiale se presenti
     if (spell.material && typeof spell.material === 'string' && !components.includes('M')) {
       components.push(`M (${spell.material})`);
+    }
+
+    // Gestione tempo di lancio (fallback su action_type)
+    let castingTime = spell.casting_time_it || spell.casting_time;
+    if (!castingTime) {
+      const actionMap = {
+        'action': '1 azione',
+        'bonus_action': '1 azione bonus',
+        'reaction': '1 reazione',
+        'minute': '1 minuto',
+        'hour': '1 ora'
+      };
+      castingTime = actionMap[spell.action_type] || spell.action_type || 'N/D';
     }
 
     const descriptionText = getSpellDescription(spell);
@@ -81,7 +91,7 @@ function renderSpells(spells) {
       <div class="spell-meta">
         <p><strong>Scuola:</strong> ${spell.school_it || spell.school || 'N/D'}</p>
         <p><strong>Classi:</strong> ${classesList}</p>
-        <p><strong>Tempo di lancio:</strong> ${spell.casting_time_it || spell.casting_time || 'N/D'}</p>
+        <p><strong>Tempo di lancio:</strong> ${castingTime}</p>
         <p><strong>Gittata:</strong> ${spell.range_it || spell.range || 'N/D'}</p>
         <p><strong>Componenti:</strong> ${components.length > 0 ? components.join(', ') : 'Nessuna'}</p>
         <p><strong>Durata:</strong> ${spell.duration_it || spell.duration || 'N/D'}</p>
@@ -95,7 +105,7 @@ function renderSpells(spells) {
   });
 }
 
-// Funzione di filtraggio ottimizzata per il campo classe
+// Funzione di filtraggio per il campo classe
 function filterSpells() {
   const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const selectedLevel = document.getElementById('levelFilter').value;
@@ -111,7 +121,7 @@ function filterSpells() {
     const spellLevel = (spell.level !== undefined && spell.level !== null) ? spell.level.toString() : '';
     const matchesLevel = selectedLevel === '' || spellLevel === selectedLevel;
 
-    // 3. Filtro Classe (estrazione dinamica da tutti i campi possibili)
+    // 3. Filtro Classe
     let spellClasses = [];
     if (spell.classes && Array.isArray(spell.classes)) {
       spellClasses = spellClasses.concat(spell.classes);
@@ -124,7 +134,6 @@ function filterSpells() {
       spellClasses.push(spell.classes);
     }
 
-    // Conversione di tutto il testo delle classi in un'unica stringa minuscola
     const classesString = spellClasses.join(' ').toLowerCase();
     const matchesClass = selectedClass === '' || classesString.includes(selectedClass);
 
